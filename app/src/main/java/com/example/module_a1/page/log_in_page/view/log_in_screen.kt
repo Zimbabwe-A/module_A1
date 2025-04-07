@@ -18,6 +18,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,7 +66,6 @@ fun LogInScreen(navController: NavController, viewModel: LogInScreenViewModel = 
                 .background(Gray100)
         ) {
             Box(
-                modifier = Modifier.background(Color.White)
             ) {
                 Column {
                     TextField(
@@ -75,7 +76,7 @@ fun LogInScreen(navController: NavController, viewModel: LogInScreenViewModel = 
                             .padding(horizontal = 15.dp)
                             .fillMaxWidth(),
                         maxLines = 1,
-                        )
+                    )
                     if (viewModel.mailError.isNotEmpty()) {
                         Text(
                             text = viewModel.mailError,

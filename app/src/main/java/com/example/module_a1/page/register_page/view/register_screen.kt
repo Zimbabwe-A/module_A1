@@ -79,7 +79,6 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
             Box(
                 modifier = Modifier
                     .padding(top = 20.dp)
-                    .background(Color.White)
             ) {
                 Column {
                     TextField(
@@ -156,7 +155,7 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .padding(top = 20.dp)
+                    .padding(bottom = 20.dp)
                     .padding(horizontal = 15.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .fillMaxWidth(1f)
