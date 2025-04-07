@@ -45,7 +45,6 @@ import com.example.module_a1.ui.theme.Purple
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = viewModel()) {
-
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -90,9 +89,17 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
                         modifier = Modifier
                             .padding(horizontal = 15.dp)
                             .fillMaxWidth(),
-                        visualTransformation = PasswordVisualTransformation(),
                         maxLines = 1,
                     )
+                    if (viewModel.loginError.isNotEmpty()) {
+                        Text(
+                            text = viewModel.loginError,
+                            color = Color.Red,
+                            style = TextStyle(fontSize = 12.sp),
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
+                    }
+
                     TextField(
                         value = viewModel.mailText,
                         onValueChange = { viewModel.onMailChanged(it) },
@@ -102,6 +109,15 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
                             .fillMaxWidth(),
                         maxLines = 1,
                     )
+                    if (viewModel.mailError.isNotEmpty()) {
+                        Text(
+                            text = viewModel.mailError,
+                            color = Color.Red,
+                            style = TextStyle(fontSize = 12.sp),
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
+                    }
+
                     TextField(
                         value = viewModel.passwordText,
                         onValueChange = { viewModel.onPasswordChanged(it) },
@@ -124,11 +140,19 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
                             }
                         }
                     )
+                    if (viewModel.passwordError.isNotEmpty()) {
+                        Text(
+                            text = viewModel.passwordError,
+                            color = Color.Red,
+                            style = TextStyle(fontSize = 12.sp),
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
+                    }
                 }
             }
-            Spacer(
-                modifier = Modifier.fillMaxHeight(0.85f)
-            )
+
+            Spacer(modifier = Modifier.fillMaxHeight(0.85f))
+
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
@@ -137,7 +161,6 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
                     .clip(RoundedCornerShape(8.dp))
                     .fillMaxWidth(1f)
                     .height(60.dp)
-                    .fillMaxWidth()
                     .background(Purple)
                     .clickable {
                         viewModel.onRegisterClicked()

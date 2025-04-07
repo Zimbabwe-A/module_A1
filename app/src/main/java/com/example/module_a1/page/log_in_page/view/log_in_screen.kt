@@ -76,6 +76,14 @@ fun LogInScreen(navController: NavController, viewModel: LogInScreenViewModel = 
                             .fillMaxWidth(),
                         maxLines = 1,
                         )
+                    if (viewModel.mailError.isNotEmpty()) {
+                        Text(
+                            text = viewModel.mailError,
+                            color = Color.Red,
+                            style = TextStyle(fontSize = 12.sp),
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
+                    }
                     TextField(
                         value = viewModel.passwordText,
                         onValueChange = { viewModel.onPasswordChanged(it) },
@@ -86,6 +94,14 @@ fun LogInScreen(navController: NavController, viewModel: LogInScreenViewModel = 
                         visualTransformation = PasswordVisualTransformation(),
                         maxLines = 1,
                     )
+                    if (viewModel.passwordError.isNotEmpty()) {
+                        Text(
+                            text = viewModel.passwordError,
+                            color = Color.Red,
+                            style = TextStyle(fontSize = 12.sp),
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
+                    }
                 }
             }
             Box(
