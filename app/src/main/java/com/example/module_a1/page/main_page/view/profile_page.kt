@@ -1,6 +1,7 @@
 package com.example.module_a1.page.main_page.view
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,10 +27,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.module_a1.ui.theme.Gray100
 
 @Composable
-fun ProfilePage() {
+fun ProfilePage(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -87,11 +89,25 @@ fun ProfilePage() {
         Spacer(modifier = Modifier.height(24.dp))
 
         // Кнопка выхода
-        Button(
-            onClick = { /* Выход из аккаунта */ },
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable{
+                    navController.navigate("LogInScreen")
+                }
+                .height(50.dp)
+                .background(Color.White)
+                .padding(horizontal = 24.dp),
+            contentAlignment = Alignment.CenterStart
         ) {
-            Text("Выйти", color = Color.White)
+            Text(
+                text = "Выйти",
+                style = TextStyle(
+                    color = Color.Red,
+                    fontWeight = FontWeight.W400,
+                    fontSize = 16.sp
+                )
+            )
         }
     }
 }

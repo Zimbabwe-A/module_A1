@@ -30,7 +30,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.module_a1.ui.theme.Gray100
 
 @Composable
-fun MainScreen() {
+fun MainScreen(navAppController: NavController) {
     val navController = rememberNavController()
 
     val topLevelRoutes = listOf(
@@ -94,12 +94,12 @@ fun MainScreen() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "CatalogPage",
+            startDestination = "ProfilePage",
             modifier = Modifier.padding(innerPadding)
         ) {
             composable("CatalogPage") { CatalogPage() }
             composable("CorzinaPage") { CorzinaPage() }
-            composable("ProfilePage") { ProfilePage() }
+            composable("ProfilePage") { ProfilePage(navAppController) }
         }
     }
 }

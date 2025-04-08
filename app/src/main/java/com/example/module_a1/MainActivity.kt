@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
                 NavHost(navController = navController, startDestination = "MainScreen") {
                     composable("LogInScreen") { LogInScreen(navController) }
                     composable("RegisterScreen") { RegisterScreen(navController) }
-                    composable("MainScreen") { MainScreen() }
+                    composable("MainScreen") { MainScreen(navController) }
                 }
 
             }
