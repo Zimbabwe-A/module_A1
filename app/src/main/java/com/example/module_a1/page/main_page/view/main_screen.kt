@@ -94,11 +94,11 @@ fun MainScreen(navAppController: NavController) {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "ProfilePage",
+            startDestination = "CorzinaPage",
             modifier = Modifier.padding(innerPadding)
         ) {
             composable("CatalogPage") { CatalogPage() }
-            composable("CorzinaPage") { CorzinaPage() }
+            composable("CorzinaPage") { CorzinaPage(navController) }
             composable("ProfilePage") { ProfilePage(navAppController) }
         }
     }
