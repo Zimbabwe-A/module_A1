@@ -15,9 +15,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -66,16 +70,34 @@ fun LogInScreen(navController: NavController, viewModel: LogInScreenViewModel = 
                 .background(Gray100)
         ) {
             Box(
+                modifier = Modifier.background(Color.White).padding(vertical = 10.dp)
             ) {
-                Column {
-                    TextField(
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    OutlinedTextField(
                         value = viewModel.mailText,
                         onValueChange = { viewModel.onMailChanged(it) },
-                        label = { Text("Почта") },
+                        label = {
+                            Text(
+                                "Почта",
+                                style = TextStyle(
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Gray100,
+                                )
+                            )
+                        },
                         modifier = Modifier
                             .padding(horizontal = 15.dp)
                             .fillMaxWidth(),
                         maxLines = 1,
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent
+                        )
                     )
                     if (viewModel.mailError.isNotEmpty()) {
                         Text(
@@ -85,15 +107,38 @@ fun LogInScreen(navController: NavController, viewModel: LogInScreenViewModel = 
                             modifier = Modifier.padding(start = 16.dp)
                         )
                     }
-                    TextField(
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(0.9f)
+                            .height(2.dp)
+                            .padding()
+                            .background(Gray100)
+                    )
+
+                    OutlinedTextField(
                         value = viewModel.passwordText,
                         onValueChange = { viewModel.onPasswordChanged(it) },
-                        label = { Text("Пароль") },
+                        label = {
+                            Text(
+                                "Пароль", style = TextStyle(
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Gray100,
+                                )
+                            )
+                        },
                         modifier = Modifier
-                            .padding(horizontal = 15.dp)
+                            .padding(horizontal = 15.dp).padding(top = 10.dp)
                             .fillMaxWidth(),
                         visualTransformation = PasswordVisualTransformation(),
                         maxLines = 1,
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent
+                        )
                     )
                     if (viewModel.passwordError.isNotEmpty()) {
                         Text(
