@@ -2,88 +2,106 @@ package com.example.module_a1.page.main_page.view
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.material.BottomNavigation
+//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.module_a1.ui.theme.Gray100
 
 @Composable
-fun MainScreen(navController: NavController) {
-    var selectedTab by remember { mutableStateOf(0) } // По умолчанию открыт "Магазин" (индекс 0)
+fun MainScreen() {
+    val navController = rememberNavController()
+
+    val topLevelRoutes = listOf(
+        TopLevelRoute("Каталог", "CatalogPage", Icons.Default.Search),
+        TopLevelRoute("Корзина", "CorzinaPage", Icons.Default.ShoppingCart),
+        TopLevelRoute("Профиль", "ProfilePage", Icons.Default.Person),
+    )
 
     Scaffold(
         bottomBar = {
-            NavigationBar {
-                // Кнопка "Каталог"
-                NavigationBarItem(
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Default.Search , // Ваша иконка
-                            contentDescription = "Каталог"
-                        )
-                    },
-                    label = { Text("Каталог") },
-                    selected = selectedTab == 0,
-                    onClick = { selectedTab = 0 }
-                )
+            BottomNavigation(
+                backgroundColor = Color.White, // Белый фон
+            ) {
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentDestination = navBackStackEntry?.destination
 
-                // Кнопка "Корзина"
-                NavigationBarItem(
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Default.ShoppingCart, // Ваша иконка
-                            contentDescription = "Корзина"
-                        )
-                    },
-                    label = { Text("Корзина") },
-                    selected = selectedTab == 1,
-                    onClick = { selectedTab = 1 }
-                )
-
-                // Кнопка "Профиль"
-                NavigationBarItem(
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Default.Person, // Ваша иконка
-                            contentDescription = "Профиль"
-                        )
-                    },
-                    label = { Text("Профиль") },
-                    selected = selectedTab == 2,
-                    onClick = { selectedTab = 2 }
-                )
+                topLevelRoutes.forEach { topLevelRoute ->
+                    BottomNavigationItem(
+                        icon = {
+                            Icon(
+                                imageVector = topLevelRoute.icon,
+                                contentDescription = topLevelRoute.name,
+                                tint = if (currentDestination?.route == topLevelRoute.route) {
+                                    Color(0xFF6200EE) // Фиолетовый для выбранного
+                                } else {
+                                    Color.Gray // Серый для невыбранного
+                                }
+                            )
+                        },
+                        label = {
+                            Text(
+                                text = topLevelRoute.name,
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.Bold
+                                ),
+                                color = if (currentDestination?.route == topLevelRoute.route) {
+                                    Color(0xFF6200EE) // Фиолетовый для выбранного
+                                } else {
+                                    Color.Gray // Серый для невыбранного
+                                }
+                            )
+                        },
+                        selected = currentDestination?.route == topLevelRoute.route,
+                        onClick = {
+                            navController.navigate(topLevelRoute.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        },
+                        selectedContentColor = Color(0xFF6200EE), // Фиолетовый
+                        unselectedContentColor = Color.Gray, // Серый
+                        alwaysShowLabel = true // Всегда показывать текст
+                    )
+                }
             }
         }
-    ) { paddingValues ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        )
-                {
-                    when (selectedTab) {
-                        0 ->  CatalogPage() // Экран магазина
-                        1 -> CorzinaPage() // Экран каталога
-                        2 -> ProfilePage() // Экран профиля
-                    }
-                }
+    ) { innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = "CatalogPage",
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            composable("CatalogPage") { CatalogPage() }
+            composable("CorzinaPage") { CorzinaPage() }
+            composable("ProfilePage") { ProfilePage() }
+        }
     }
 }
 
+data class TopLevelRoute(val name: String, val route: String, val icon: ImageVector)
