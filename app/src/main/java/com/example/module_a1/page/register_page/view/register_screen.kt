@@ -26,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,6 +48,16 @@ import com.example.module_a1.ui.theme.Purple
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = viewModel()) {
+
+    val navigate = viewModel.navigationToNextScreen
+
+    LaunchedEffect(navigate) {
+        if (navigate) {
+            navController.navigate("LogInScreen")
+            viewModel.onNavigate()
+        }
+    }
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -88,7 +99,7 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
                 ) {
                     OutlinedTextField(
                         value = viewModel.loginText,
-                        onValueChange = { viewModel.onMailChanged(it) },
+                        onValueChange = { viewModel.onLoginChanged(it) },
                         label = {
                             Text(
                                 "Логин",
