@@ -15,6 +15,9 @@ class RegisterViewModel : ViewModel() {
     var mailError by mutableStateOf("")
     var passwordError by mutableStateOf("")
 
+    var navigationToNextScreen by mutableStateOf(false)
+        private  set
+
     fun onLoginChanged(newLogin: String) {
         loginText = newLogin
         loginError = ""
@@ -73,6 +76,11 @@ class RegisterViewModel : ViewModel() {
 
         if (valid) {
             // Логика регистрации, если все данные валидны
+            navigationToNextScreen = true
         }
+    }
+
+    fun onNavigate() {
+        navigationToNextScreen = false
     }
 }
