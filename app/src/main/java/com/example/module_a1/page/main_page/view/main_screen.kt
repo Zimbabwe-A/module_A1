@@ -24,6 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.module_a1.page.main_page.utils.ProductUtils
 
 @Composable
 fun MainScreen(navAppController: NavController) {
@@ -93,9 +94,16 @@ fun MainScreen(navAppController: NavController) {
             startDestination = "CatalogPage",
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable("CatalogPage") { CatalogPage() }
+            composable("CatalogPage") { CatalogPage(navController = navController) }
             composable("CorzinaPage") { CorzinaPage(navController) }
             composable("ProfilePage") { ProfilePage(navAppController) }
+            composable("productDetail/{productId}") { backStackEntry ->
+                val productId = backStackEntry.arguments?.getString("productId")?.toIntOrNull()
+                productId?.let {
+                    val product = ProductUtils.getProductById(it)
+                    ProductDetailPage(product = product, navController = navController)
+                }
+            }
         }
     }
 }

@@ -53,7 +53,7 @@ fun CorzinaPage(navController: NavController) {
         count--
     }
 
-    val product = listOf<Product>(
+    val corzinaProduct = listOf<Product>(
         Product(
             id = 0,
             name = "Товар 1",
@@ -91,7 +91,7 @@ fun CorzinaPage(navController: NavController) {
                     fontWeight = FontWeight.W500,
                 )
             )
-            if (product.isEmpty()) {
+            if (corzinaProduct.isEmpty()) {
             } else {
                 Box() {
                     IconButton(
@@ -107,7 +107,7 @@ fun CorzinaPage(navController: NavController) {
         }
 
 //    Тело
-        if (product.isEmpty()) {
+        if (corzinaProduct.isEmpty()) {
             Box(
                 contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()
             ) {
@@ -157,8 +157,8 @@ fun CorzinaPage(navController: NavController) {
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     contentPadding = PaddingValues(bottom = 80.dp)
                 ) {
-                    items(product.size) { index ->
-                        val item = product[index]
+                    items(corzinaProduct.size) { index ->
+                        val item = corzinaProduct[index]
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -232,7 +232,7 @@ fun CorzinaPage(navController: NavController) {
                         .background(Color.White)
                         .padding(16.dp),
                 ) {
-                    val total = product.sumOf { it.price }
+                    val total = corzinaProduct.sumOf { it.price }
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,

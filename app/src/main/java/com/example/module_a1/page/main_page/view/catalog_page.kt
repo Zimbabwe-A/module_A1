@@ -2,6 +2,7 @@ package com.example.module_a1.page.main_page.view
 
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,72 +36,53 @@ import com.example.module_a1.page.main_page.model.Product
 
 
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.module_a1.page.main_page.viewmodel.CatalogViewModel
 
 @Composable
-fun CatalogPage(viewModel: CatalogViewModel = viewModel()) {
-    val searchQuery = viewModel.searchQuery
-    val filteredProducts = viewModel.filteredProducts
+fun CatalogPage(navController: NavController, viewModel: CatalogViewModel = viewModel()) {
+    val products = viewModel.filteredProducts
+    val query = viewModel.searchQuery
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Gray100)
             .padding(horizontal = 8.dp)
     ) {
         OutlinedTextField(
-            value = searchQuery,
+            value = query,
             onValueChange = viewModel::onSearchChange,
-            prefix = {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "search",
-                    tint = Color.Gray,
-                )
-            },
-            label = {
-                Text(
-                    "Search...",
-                    style = TextStyle(
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Gray,
-                    )
-                )
-            },
+            label = { Text("Поиск...") },
+            leadingIcon = { Icon(Icons.Default.Search, contentDescription = "search") },
             modifier = Modifier
-                .padding(horizontal = 15.dp)
-                .fillMaxWidth(),
-            maxLines = 1,
-            colors = TextFieldDefaults.colors(
-                focusedIndicatorColor = Color.Gray,
-                unfocusedIndicatorColor = Color.Gray,
-            )
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
         )
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
+            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .padding(top = 10.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(filteredProducts.size) { index ->
-                ProductItem(product = filteredProducts[index])
+            items(products.size) { index ->
+                val product = products[index]
+                ProductItem(product = product) {
+                    navController.navigate("productDetail/${product.id}")
+                }
             }
+
         }
     }
 }
-
 @Composable
-fun ProductItem(product: Product) {
+fun ProductItem(product: Product, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp),
-        elevation = 2.dp,
-        shape = RoundedCornerShape(16.dp)
+            .height(200.dp)
+            .clickable(onClick = onClick),
+        shape = MaterialTheme.shapes.medium
     ) {
         Column {
             Box(
@@ -110,23 +92,11 @@ fun ProductItem(product: Product) {
                     .background(Color.Blue),
                 contentAlignment = Alignment.Center
             ) {
+                Text(text = product.name, color = Color.White)
             }
-
-            // Название и описание
-            Column(
-                modifier = Modifier.padding(8.dp)
-            ) {
-                Text(
-                    text = product.name, maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = product.description,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    color = Color.Gray
-                )
+            Column(modifier = Modifier.padding(8.dp)) {
+                Text(text = product.name, maxLines = 1)
+                Text(text = product.description, maxLines = 2, color = Color.Gray)
             }
         }
     }
