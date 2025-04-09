@@ -30,7 +30,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.*
-import androidx.compose.runtime.*
 import androidx.compose.ui.text.style.TextOverflow
 import com.example.module_a1.page.main_page.model.Product
 
