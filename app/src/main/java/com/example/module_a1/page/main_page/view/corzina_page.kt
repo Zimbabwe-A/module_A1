@@ -1,6 +1,5 @@
 package com.example.module_a1.page.main_page.view
 
-import androidx.compose.foundation.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,10 +19,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -61,17 +58,17 @@ fun CorzinaPage(navController: NavController) {
             id = 0,
             name = "Товар 1",
             price = 2400.0,
-            info = "Ненужная информаиця",
+            description = "Ненужная информаиця",
         ), Product(
             id = 1,
             name = "Товар 2",
             price = 3400.0,
-            info = "Ненужная информаиця",
+            description = "Ненужная информаиця",
         ), Product(
             id = 2,
             name = "Товар 3",
             price = 900.0,
-            info = "Ненужная информаиця",
+            description = "Ненужная информаиця",
         )
     )
 

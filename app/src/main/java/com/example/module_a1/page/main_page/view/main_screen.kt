@@ -18,16 +18,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.module_a1.ui.theme.Gray100
 
 @Composable
 fun MainScreen(navAppController: NavController) {
@@ -94,7 +90,7 @@ fun MainScreen(navAppController: NavController) {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "CorzinaPage",
+            startDestination = "CatalogPage",
             modifier = Modifier.padding(innerPadding)
         ) {
             composable("CatalogPage") { CatalogPage() }
