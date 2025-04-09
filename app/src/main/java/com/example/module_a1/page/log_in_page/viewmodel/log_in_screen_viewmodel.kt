@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 
 class LogInScreenViewModel : ViewModel() {
     var mailText by mutableStateOf("")
@@ -33,7 +34,7 @@ class LogInScreenViewModel : ViewModel() {
         return password.length > 6
     }
 
-    fun onSignInClickable() {
+    fun onSignInClickable(navController: NavController) {
         var valid = true
 
         // Проверка на валидность почты
@@ -49,7 +50,12 @@ class LogInScreenViewModel : ViewModel() {
         }
 
         if (valid) {
-            // Логика регистрации, если все данные валидны
+            // Логика регистрации или авторизации
+            if (mailText == "admin@mail.ru" && passwordText == "admin1234") {
+                navController.navigate("MainScreen")
+            } else {
+                mailError = "Неверная почта или пароль"
+            }
         }
     }
 }

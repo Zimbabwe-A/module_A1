@@ -161,7 +161,7 @@ fun LogInScreen(navController: NavController, viewModel: LogInScreenViewModel = 
                     .fillMaxWidth()
                     .background(Purple)
                     .clickable {
-                        viewModel.onSignInClickable()
+                        viewModel.onSignInClickable(navController)
                     }
             ) {
                 Text(

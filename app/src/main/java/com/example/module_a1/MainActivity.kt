@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
             Module_A1Theme {
                 var navController = rememberNavController()
 
-                NavHost(navController = navController, startDestination = "MainScreen") {
+                NavHost(navController = navController, startDestination = "LogInScreen") {
                     composable("LogInScreen") { LogInScreen(navController) }
                     composable("RegisterScreen") { RegisterScreen(navController) }
                     composable("MainScreen") { MainScreen(navController) }
