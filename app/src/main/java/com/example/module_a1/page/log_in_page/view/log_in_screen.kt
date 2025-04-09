@@ -48,12 +48,16 @@ fun LogInScreen(navController: NavController, viewModel: LogInScreenViewModel = 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Color.White
+                ),
                 title = {
                     Text(
                         "Авторизация",
                         style = TextStyle(
                             fontWeight = FontWeight.Bold,
                             fontSize = 22.sp,
+                            color = Color.Black
                         ),
                         textAlign = TextAlign.Center
                     )
