@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.module_a1.page.main_page.model.Product
+import com.example.module_a1.page.main_page.CartManager
 
 @Composable
 fun ProductDetailPage(product: Product, navController: NavController) {
@@ -38,8 +39,13 @@ fun ProductDetailPage(product: Product, navController: NavController) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Button(onClick = { navController.popBackStack() }) {
-            Text("Назад")
+        Button(
+            onClick = {
+                CartManager.CartManager.addToCart(product)
+                navController.popBackStack()
+            }
+        ) {
+            Text("Купить")
         }
     }
 }

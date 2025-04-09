@@ -36,239 +36,112 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.module_a1.page.main_page.CartManager
 import com.example.module_a1.page.main_page.model.Product
 import com.example.module_a1.ui.theme.Gray100
 import com.example.module_a1.ui.theme.Purple
 
 @Composable
 fun CorzinaPage(navController: NavController) {
+    val cartItems = remember { mutableStateOf(CartManager.CartManager.getItems()) }
 
-    var count by remember { mutableStateOf(0) }
-
-    fun incrementCount() {
-        count++
+    fun refresh() {
+        cartItems.value = CartManager.CartManager.getItems()
     }
 
-    fun decrementCount() {
-        count--
-    }
-
-    val corzinaProduct = listOf<Product>(
-        Product(
-            id = 0,
-            name = "Товар 1",
-            price = 2400.0,
-            description = "Ненужная информаиця",
-        ), Product(
-            id = 1,
-            name = "Товар 2",
-            price = 3400.0,
-            description = "Ненужная информаиця",
-        ), Product(
-            id = 2,
-            name = "Товар 3",
-            price = 900.0,
-            description = "Ненужная информаиця",
-        )
-    )
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Gray100)
-    ) {
-        //            AppBar
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-                .background(Color.White),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                "Корзина", style = TextStyle(
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.W500,
-                )
-            )
-            if (corzinaProduct.isEmpty()) {
-            } else {
-                Box() {
-                    IconButton(
-                        modifier = Modifier.padding(start = 320.dp), onClick = {
-//                            Что то делает
-                        }) {
-                        Icon(
-                            imageVector = Icons.Default.Delete, contentDescription = "Назад"
-                        )
+    Column(modifier = Modifier.fillMaxSize().background(Gray100)) {
+        // AppBar
+        Box(modifier = Modifier.fillMaxWidth().height(50.dp).background(Color.White), contentAlignment = Alignment.Center) {
+            Text("Корзина", fontSize = 20.sp, fontWeight = FontWeight.W500)
+            if (cartItems.value.isNotEmpty()) {
+                IconButton(
+                    modifier = Modifier.align(Alignment.CenterEnd).padding(end = 16.dp),
+                    onClick = {
+                        CartManager.CartManager.clearCart()
+                        refresh()
                     }
+                ) {
+                    Icon(Icons.Default.Delete, contentDescription = "Удалить всё")
                 }
             }
         }
 
-//    Тело
-        if (corzinaProduct.isEmpty()) {
-            Box(
-                contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = "В вашей корзине", style = TextStyle(
-                            fontWeight = FontWeight.Bold, fontSize = 20.sp
-                        )
-                    )
-                    Text(
-                        text = "пока пусто", style = TextStyle(
-                            fontWeight = FontWeight.Bold, fontSize = 20.sp
-                        )
-                    )
-                    Text(
-                        text = "Добавьте товар из каталога", style = TextStyle(
-                            fontWeight = FontWeight.W400,
-                            fontSize = 14.sp,
-                        )
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Box(
-                        modifier = Modifier
-                            .width(210.dp)
-                            .height(50.dp)
-                            .clip(RoundedCornerShape(16.dp))
-                            .clickable {
-//                                navController.navigate("CatalogPage")
-                            }
-                            .background(Purple), contentAlignment = Alignment.Center) {
-                        Text(
-                            text = "Перейти к каталогу", style = TextStyle(
-                                color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.W500
-                            )
-                        )
-                    }
+        if (cartItems.value.isEmpty()) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("В вашей корзине", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                    Text("пока пусто", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                    Text("Добавьте товар из каталога", fontSize = 14.sp)
                 }
             }
         } else {
-            Column {
-                LazyColumn(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    contentPadding = PaddingValues(bottom = 80.dp)
-                ) {
-                    items(corzinaProduct.size) { index ->
-                        val item = corzinaProduct[index]
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clip(RoundedCornerShape(12.dp))
-                                .background(Color.White)
-                                .padding(4.dp)
-                        ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Spacer(modifier = Modifier.width(12.dp))
-                                Box(
-                                    modifier = Modifier
-                                        .size(50.dp)
-                                        .clip(RoundedCornerShape(12.dp))
-                                        .background(Color.Gray)
-                                ) {}
-                                Column(
-                                    modifier = Modifier
-                                        .padding(16.dp)
-                                        .weight(1f)
-                                ) {
-                                    Text(
-                                        text = item.name, style = TextStyle(
-                                            fontSize = 18.sp, fontWeight = FontWeight.Bold
-                                        )
-                                    )
-                                    Spacer(modifier = Modifier.height(4.dp))
-                                    Text(
-                                        text = "${item.price} ТГ", style = TextStyle(
-                                            fontSize = 16.sp, color = Color.Gray
-                                        )
-                                    )
+            LazyColumn(
+                modifier = Modifier.weight(1f).padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(bottom = 80.dp)
+            ) {
+                items(cartItems.value.size) { index ->
+                    val (product, quantity) = cartItems.value[index]
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(Color.White)
+                            .padding(8.dp)
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(
+                                modifier = Modifier.size(50.dp).clip(RoundedCornerShape(12.dp)).background(Color.Gray)
+                            )
+                            Column(modifier = Modifier.padding(16.dp).weight(1f)) {
+                                Text(product.name, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text("${product.price} ТГ", fontSize = 16.sp, color = Color.Gray)
+                            }
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                IconButton(onClick = {
+                                    CartManager.CartManager.removeFromCart(product)
+                                    refresh()
+                                }) {
+                                    Icon(Icons.Default.Delete, tint = Color.Red, contentDescription = "Удалить")
                                 }
-                                Box() {
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        IconButton(
-                                            modifier = Modifier.padding(), onClick = {
-                                                decrementCount()
-                                            }) {
-                                            Icon(
-                                                imageVector = Icons.Default.Delete,
-                                                tint = Color.Red,
-                                                contentDescription = "Назад"
-                                            )
-                                        }
-                                        Text("$count шт")
-                                        IconButton(
-                                            modifier = Modifier.padding(), onClick = {
-                                                incrementCount()
-                                            }) {
-                                            Icon(
-                                                imageVector = Icons.Default.Add,
-                                                tint = Purple,
-                                                contentDescription = "Назад"
-                                            )
-                                        }
-                                    }
+                                Text("$quantity шт")
+                                IconButton(onClick = {
+                                    CartManager.CartManager.addToCart(product)
+                                    refresh()
+                                }) {
+                                    Icon(Icons.Default.Add, tint = Purple, contentDescription = "Добавить")
                                 }
                             }
                         }
                     }
                 }
+            }
 
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 5.dp)
-                        .background(Color.White)
-                        .padding(16.dp),
+            Box(
+                modifier = Modifier.fillMaxWidth().background(Color.White).padding(16.dp),
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    val total = corzinaProduct.sumOf { it.price }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
+                    Column {
+                        Text("Вся сумма:", fontSize = 16.sp)
+                        Text("${CartManager.CartManager.getTotalPrice()} ТГ", fontSize = 18.sp, fontWeight = FontWeight.W600)
+                    }
+                    Box(
+                        modifier = Modifier.clip(RoundedCornerShape(8.dp)).background(Purple)
                     ) {
-                        Column {
-                            Text(
-                                text = "Вся сумма:", style = TextStyle(
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight.W400,
-                                )
-                            )
-                            Text(
-                                text = "$total ТГ", style = TextStyle(
-                                    fontSize = 18.sp, fontWeight = FontWeight.W600
-                                )
-                            )
-                        }
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(8.dp))
-                                .background(Purple),
-                        ) {
-                            Text(
-                                text = "Оформить заказ",
-                                modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
-                                style = TextStyle(
-                                    color = Color.White,
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            )
-                        }
+                        Text(
+                            text = "Оформить заказ",
+                            modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
+                            color = Color.White,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                 }
-
             }
         }
     }

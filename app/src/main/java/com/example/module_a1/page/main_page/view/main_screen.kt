@@ -24,7 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.module_a1.page.main_page.utils.ProductUtils
+import com.example.module_a1.page.main_page.ProductUtils
 
 @Composable
 fun MainScreen(navAppController: NavController) {

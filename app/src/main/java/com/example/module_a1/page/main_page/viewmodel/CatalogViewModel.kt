@@ -2,7 +2,7 @@ package com.example.module_a1.page.main_page.viewmodel
 
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
-import com.example.module_a1.page.main_page.utils.ProductUtils
+import com.example.module_a1.page.main_page.ProductUtils
 
 class CatalogViewModel : ViewModel() {
 

@@ -1,4 +1,4 @@
-package com.example.module_a1.page.main_page.utils
+package com.example.module_a1.page.main_page
 
 import com.example.module_a1.page.main_page.model.Product
 
