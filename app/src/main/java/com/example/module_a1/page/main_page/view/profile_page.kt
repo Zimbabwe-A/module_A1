@@ -2,7 +2,6 @@ package com.example.module_a1.page.main_page.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,7 +15,6 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,18 +23,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.module_a1.data.UserPreferences
 import com.example.module_a1.ui.theme.Gray100
 
 @Composable
-fun ProfilePage(navController: NavController) {
+fun ProfilePage(navController: NavController, navAppController: NavController) {
     val userPreferences = UserPreferences(navController.context)  // Получаем доступ к UserPreferences
 
     val user = userPreferences.getUser()
-
-    // Загружаем данные пользователя
-//    val user = userPreferences.getUser()
 
     // Параметры пользователя
     val name = user?.name
@@ -109,6 +103,7 @@ fun ProfilePage(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable{userPreferences.clearUser()
+                    navAppController.navigate("LogInScreen")
                 }
                 .height(50.dp)
                 .background(Color.White)

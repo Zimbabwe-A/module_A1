@@ -96,7 +96,7 @@ fun MainScreen(navAppController: NavController) {
         ) {
             composable("CatalogPage") { CatalogPage(navController = navController) }
             composable("CorzinaPage") { CorzinaPage(navController) }
-            composable("ProfilePage") { ProfilePage(navController) }
+            composable("ProfilePage") { ProfilePage(navController, navAppController = navAppController) }
             composable("productDetail/{productId}") { backStackEntry ->
                 val productId = backStackEntry.arguments?.getString("productId")?.toIntOrNull()
                 productId?.let {
