@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -38,12 +39,16 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.module_a1.page.log_in_page.viewmodel.LogInScreenViewModel
+import com.example.module_a1.page.register_page.viewmodel.RegisterViewModel
 import com.example.module_a1.ui.theme.Gray100
 import com.example.module_a1.ui.theme.Purple
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LogInScreen(navController: NavController, viewModel: LogInScreenViewModel = viewModel()) {
+fun LogInScreen(navController: NavController) {
+
+    val viewModel =
+        viewModel<LogInScreenViewModel>(factory = LogInScreenViewModel.Factory(LocalContext.current))
 
     Scaffold(
         topBar = {

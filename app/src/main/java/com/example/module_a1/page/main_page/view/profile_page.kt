@@ -11,15 +11,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,10 +25,29 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.example.module_a1.data.UserPreferences
 import com.example.module_a1.ui.theme.Gray100
 
 @Composable
 fun ProfilePage(navController: NavController) {
+    val userPreferences = UserPreferences(navController.context)  // Получаем доступ к UserPreferences
+
+    val user = userPreferences.getUser()
+
+    // Загружаем данные пользователя
+//    val user = userPreferences.getUser()
+
+    // Параметры пользователя
+    val name = user?.name
+    val email = user?.email
+
+    // Если пользователь не найден, показываем сообщение об ошибке
+    if (name == null || email == null) {
+        Text(text = "Ошибка: пользователь не найден!")
+        return
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -54,10 +70,10 @@ fun ProfilePage(navController: NavController) {
                 )
             )
         }
-        // Аватарка
+        // Avatar
         Spacer(modifier = Modifier.height(24.dp))
         Icon(
-            imageVector = Icons.Default.Person, // Ваша иконка
+            imageVector = Icons.Default.Person,
             contentDescription = "Аватар",
             modifier = Modifier.size(128.dp),
             tint = Color.Black
@@ -65,9 +81,9 @@ fun ProfilePage(navController: NavController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Имя пользователя
+        // Name
         Text(
-            text = "Марченко Артём",
+            text = "$name",
             style = TextStyle(
                 fontSize = 24.sp,
                 fontWeight = FontWeight.W500,
@@ -78,7 +94,7 @@ fun ProfilePage(navController: NavController) {
 
         // Email
         Text(
-            text = "ivan@example.com",
+            text = "$email",
             style = TextStyle(
                 fontSize = 15.sp,
                 fontWeight = FontWeight.W500,
@@ -92,8 +108,7 @@ fun ProfilePage(navController: NavController) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable{
-                    navController.navigate("LogInScreen")
+                .clickable{userPreferences.clearUser()
                 }
                 .height(50.dp)
                 .background(Color.White)

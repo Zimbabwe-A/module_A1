@@ -43,10 +43,10 @@ import com.example.module_a1.ui.theme.Purple
 
 @Composable
 fun CorzinaPage(navController: NavController) {
-    val cartItems = remember { mutableStateOf(CartManager.CartManager.getItems()) }
+    val cartItems = remember { mutableStateOf(CartManager.getItems()) }
 
     fun refresh() {
-        cartItems.value = CartManager.CartManager.getItems()
+        cartItems.value = CartManager.getItems()
     }
 
     Column(modifier = Modifier.fillMaxSize().background(Gray100)) {
@@ -57,7 +57,7 @@ fun CorzinaPage(navController: NavController) {
                 IconButton(
                     modifier = Modifier.align(Alignment.CenterEnd).padding(end = 16.dp),
                     onClick = {
-                        CartManager.CartManager.clearCart()
+                        CartManager.clearCart()
                         refresh()
                     }
                 ) {
@@ -100,14 +100,14 @@ fun CorzinaPage(navController: NavController) {
                             }
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 IconButton(onClick = {
-                                    CartManager.CartManager.removeFromCart(product)
+                                    CartManager.removeFromCart(product)
                                     refresh()
                                 }) {
                                     Icon(Icons.Default.Delete, tint = Color.Red, contentDescription = "Удалить")
                                 }
                                 Text("$quantity шт")
                                 IconButton(onClick = {
-                                    CartManager.CartManager.addToCart(product)
+                                    CartManager.addToCart(product)
                                     refresh()
                                 }) {
                                     Icon(Icons.Default.Add, tint = Purple, contentDescription = "Добавить")
@@ -128,7 +128,7 @@ fun CorzinaPage(navController: NavController) {
                 ) {
                     Column {
                         Text("Вся сумма:", fontSize = 16.sp)
-                        Text("${CartManager.CartManager.getTotalPrice()} ТГ", fontSize = 18.sp, fontWeight = FontWeight.W600)
+                        Text("${CartManager.getTotalPrice()} ТГ", fontSize = 18.sp, fontWeight = FontWeight.W600)
                     }
                     Box(
                         modifier = Modifier.clip(RoundedCornerShape(8.dp)).background(Purple)

@@ -102,7 +102,7 @@ fun ProductDetailPage(product: Product, navController: NavController) {
                     )
                     .background(Purple)
                     .clickable {
-                        CartManager.CartManager.addToCart(product)
+                        CartManager.addToCart(product)
                         navController.popBackStack()
                     },
                 contentAlignment = Alignment.Center,
