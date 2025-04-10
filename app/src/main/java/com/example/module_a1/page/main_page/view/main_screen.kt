@@ -18,16 +18,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.module_a1.ui.theme.Gray100
+import com.example.module_a1.page.main_page.ProductUtils
 
 @Composable
 fun MainScreen(navAppController: NavController) {
@@ -94,12 +91,19 @@ fun MainScreen(navAppController: NavController) {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "ProfilePage",
+            startDestination = "CatalogPage",
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable("CatalogPage") { CatalogPage() }
-            composable("CorzinaPage") { CorzinaPage() }
-            composable("ProfilePage") { ProfilePage(navAppController) }
+            composable("CatalogPage") { CatalogPage(navController = navController) }
+            composable("CorzinaPage") { CorzinaPage(navController) }
+            composable("ProfilePage") { ProfilePage(navController, navAppController = navAppController) }
+            composable("productDetail/{productId}") { backStackEntry ->
+                val productId = backStackEntry.arguments?.getString("productId")?.toIntOrNull()
+                productId?.let {
+                    val product = ProductUtils.getProductById(it)
+                    ProductDetailPage(product = product, navController = navController)
+                }
+            }
         }
     }
 }

@@ -24,12 +24,14 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -43,11 +45,14 @@ import androidx.navigation.NavController
 import com.example.module_a1.page.register_page.viewmodel.RegisterViewModel
 import com.example.module_a1.ui.theme.Gray100
 import com.example.module_a1.ui.theme.Purple
+import java.util.function.LongConsumer
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = viewModel()) {
+fun RegisterScreen(navController: NavController) {
 
+    val viewModel =
+        viewModel<RegisterViewModel>(factory = RegisterViewModel.Factory(LocalContext.current))
     val navigate = viewModel.navigationToNextScreen
 
     LaunchedEffect(navigate) {
@@ -60,12 +65,16 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Color.White
+                ),
                 title = {
                     Text(
                         "Регистрация",
                         style = TextStyle(
                             fontWeight = FontWeight.Bold,
                             fontSize = 22.sp,
+                            color = Color.Black
                         ),
                         textAlign = TextAlign.Center
                     )
@@ -74,7 +83,8 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
                     IconButton(onClick = { navController.navigate("LogInScreen") }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Назад"
+                            contentDescription = "Назад",
+                            tint = Color.Black
                         )
                     }
                 },
@@ -92,7 +102,7 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
                 modifier = Modifier
                     .padding(top = 20.dp)
                     .background(Color.White),
-                ) {
+            ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -130,9 +140,9 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
                     }
                     Box(
                         modifier = Modifier
+                            .padding(vertical = 3.dp)
                             .fillMaxWidth(0.9f)
                             .height(2.dp)
-                            .padding()
                             .background(Gray100)
                     )
 
@@ -171,9 +181,9 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
 
                     Box(
                         modifier = Modifier
+                            .padding(vertical = 3.dp)
                             .fillMaxWidth(0.9f)
                             .height(2.dp)
-                            .padding()
                             .background(Gray100)
                     )
 
